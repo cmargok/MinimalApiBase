@@ -28,8 +28,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\Exceptions\" />
-    <Folder Include="Infrastructure\Integration\" />
+    <Folder Include="04.Domain\Exceptions\" />
+    <Folder Include="02.Infrastructure\Integration\" />
   </ItemGroup>
 
 </Project>
