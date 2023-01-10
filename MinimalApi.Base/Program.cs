@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MinimalApi.Base;
-using MinimalApi.Base.Application.UseCases.Slave;
 using MinimalApi.Base.Infrastructure.Persistence;
 using MinimalApi.Base.Presentation.ApiServices;
 using MinimalApi.Base.Presentation.ApiServices.OpenApiSupport;

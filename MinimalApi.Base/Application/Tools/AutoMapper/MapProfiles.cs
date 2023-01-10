@@ -8,8 +8,10 @@ namespace MinimalApi.Base.Application.Tools.AutoMapper
     {
         public MapProfiles()
         {
-            CreateMap<List<WeatherForecast>, ListForestCatOut>()
-                .ForMember(target => target.ListForecast, opt => opt.MapFrom(source => source));
+            /*  CreateMap<List<WeatherForecast>, ListForestCatOut>()
+                  .ForMember(target => target.ListForecast, opt => opt.MapFrom(source => source));*/
+            //CreateMap<WeatherForecast, WeatherForecastOutDto>().ForMember(o => o.Id, op => op.Ignore()).ReverseMap();
+            CreateMap<WeatherForecast, WeatherForecastOutDto>().ReverseMap();
         }
     }
 }

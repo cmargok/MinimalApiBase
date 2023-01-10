@@ -19,23 +19,24 @@ namespace MinimalApi.Base.Application.Services.Slave
 
         public async Task<ListForestCatOut> GetListForestAsync(CancellationToken token)
         {
-            var ListWeather = await _weatherRepository.GetAllAsync(token);
+            var ListWeatherDB = await _weatherRepository.GetAllAsync(token);
          
             var ListWeatherDto= new ListForestCatOut();
 
 
-            if(ListWeather is not null )
+            if(ListWeatherDB is not null)
             {
-                ListWeatherDto = _mapper.Map<ListForestCatOut>(ListWeather);
+                ListWeatherDto.ListForecast = _mapper.Map<List<WeatherForecastOutDto>>(ListWeatherDB);
                 ListWeatherDto.Result = ResultStatus.Success.GetDescription();
                 ListWeatherDto.Message = "Operacion Exitosa";
-
+                CreateSendLogApi();
                 return ListWeatherDto;
             }
 
             ListWeatherDto.Result = ResultStatus.NoRecords.GetDescription();
             ListWeatherDto.Message = "No Data found";
-
+            CreateSendLogApi();
+            return ListWeatherDto;
 
         }
 
