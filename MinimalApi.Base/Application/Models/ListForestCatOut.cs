@@ -5,6 +5,6 @@ namespace MinimalApi.Base.Application.Models
 {
     public class ListForestCatOut : BaseOut
     {
-        public List<WeatherForecastOutDto> ListForecast { get; set; }
+        public IEnumerable<WeatherForecastOutDto> ListForecast { get; set; }
     }
 }

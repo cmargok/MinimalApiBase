@@ -11,6 +11,12 @@
   <ItemGroup>
     <PackageReference Include="Asp.Versioning.Http" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="NLog" Version="5.1.1" />
@@ -22,9 +28,7 @@
 
   <ItemGroup>
     <Folder Include="Domain\Exceptions\" />
-    <Folder Include="Domain\RepositoriesContracts\" />
     <Folder Include="Infrastructure\Integration\" />
-    <Folder Include="Infrastructure\Persistence\Repositories Implementation\" />
   </ItemGroup>
 
 </Project>

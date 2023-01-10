@@ -2,7 +2,7 @@
 using Asp.Versioning.Builder;
 using Microsoft.AspNetCore.Mvc;
 using MinimalApi.Base.Application.Models;
-using MinimalApi.Base.Application.UseCases.Slave;
+using MinimalApi.Base.Application.Services.Slave;
 using MinimalApi.Base.Presentation.Filters;
 using System;
 
@@ -12,7 +12,7 @@ namespace MinimalApi.Base.Presentation.Controllers
     {
         public static void RegisterProductsEndpoints(this IEndpointRouteBuilder endpoints, ApiVersionSet versionSet, ILogger _logger)
         {
-            endpoints.MapGet("/api/v1/GetAll", async (HttpContext _httpContext, [FromServices] IServiceSlave _iServiceSlave, CancellationToken token)
+            endpoints.MapGet("/api/v1/GetAll", async (HttpContext _httpContext, [FromServices] IForecastService _iServiceSlave, CancellationToken token)
              =>
             {
 

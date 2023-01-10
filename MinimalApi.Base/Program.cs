@@ -3,8 +3,10 @@ using Asp.Versioning.Conventions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MinimalApi.Base;
 using MinimalApi.Base.Application.UseCases.Slave;
+using MinimalApi.Base.Infrastructure.Persistence;
 using MinimalApi.Base.Presentation.ApiServices;
 using MinimalApi.Base.Presentation.ApiServices.OpenApiSupport;
 using MinimalApi.Base.Presentation.Controllers;
@@ -24,8 +26,14 @@ try
 
     // Add services to the container.
 
-    builder.Services.AddScoped<IServiceSlave, ServiceSlave>();
+    builder.Services.AddDbContext<ApplicationDBContext>(
+        options => options.UseSqlServer(builder.Configuration.GetConnectionString("MinimalApiDB")));
 
+    builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+    builder.Services.AddApplicationServicesGroup();
+    
+    builder.Services.AddInfrastructureRepositoriesGroup();
 
     builder.Services.AddHttpClientsGroup();
 
@@ -61,7 +69,13 @@ try
         setup.OperationFilter<HeaderParametersOperationFilter>();
     });
 
-
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowAll",
+            policy => policy.AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowAnyOrigin());
+    });
 
 
 
@@ -89,7 +103,7 @@ try
     app.UseMiddleware<OperationCanceledMiddleware>();
 
 
-
+    app.UseCors("AllowAll");
     //===================== Controllers =============================
 
 
