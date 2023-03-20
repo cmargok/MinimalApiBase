@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-
 namespace MinimalApi.Base.Domain.Enums
 {
     public enum ResultStatus
@@ -20,4 +19,7 @@ namespace MinimalApi.Base.Domain.Enums
         ExpiredCode,
 
     }
+
+  
+
 }

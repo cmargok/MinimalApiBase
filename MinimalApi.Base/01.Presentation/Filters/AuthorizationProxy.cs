@@ -1,13 +1,16 @@
-﻿namespace MinimalApi.Base.Presentation.Filters
+﻿using Microsoft.Extensions.Options;
+
+namespace MinimalApi.Base.Presentation.Filters
 {
     public class AuthorizationProxy : IEndpointFilter
     {
-        private readonly IConfiguration _configuration;
         private readonly ILogger<AuthorizationProxy> _logger;
+        private readonly SecuritySettings _securitySettings;
 
-        public AuthorizationProxy(IConfiguration configuration, ILogger<AuthorizationProxy> logger)
+
+        public AuthorizationProxy( ILogger<AuthorizationProxy> logger, IOptions<SecuritySettings> securitySettings)
         {
-            _configuration = configuration;
+            _securitySettings = securitySettings.Value;
             _logger = logger;
         }
 
@@ -21,7 +24,7 @@
 
             if (UserId is not null)
             {
-                string? Apitoken = _configuration["Security:ApiToken"];
+                string? Apitoken = _securitySettings.ApiToken;
                 if (ApiTokenIncoming is not null && ApiTokenIncoming.Equals(Apitoken))
                 {
                     var result = await next(context);
@@ -32,10 +35,6 @@
             }
             _logger.LogWarning("Unauthorized - headers");
             return Results.Unauthorized();
-
-
         }
-
-
-    }
+    } 
 }

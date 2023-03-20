@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace MinimalApi.Base.Domain.Shared
 {
-    public static class Tools
+    public static class ExtensionsMethods
     {
 
         public static string GetDescription(this Enum enumType)
