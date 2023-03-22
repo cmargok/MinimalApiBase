@@ -43,8 +43,7 @@ namespace MinimalApi.Base.Presentation.ApiServices
         public static IServiceCollection AddConfigureJWT(this IServiceCollection services, IConfiguration configuration)
         {
            
-            services.Configure < JwtOptions>(configuration.GetSection("Security:Jwt"));
-                
+            services.Configure < JwtOptions>(configuration.GetSection("Security:Jwt"));             
 
 
             return services;

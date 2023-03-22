@@ -18,7 +18,7 @@ namespace MinimalApi.Base.Presentation.Filters
         public virtual async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context,
             EndpointFilterDelegate next)
         {
-            _logger.LogInformation("Validate headers");
+           // _logger.LogInformation("Validate headers");
             string? UserId = context.HttpContext.Request.Headers["UserId"];
             string? ApiTokenIncoming = context.HttpContext.Request.Headers["ApiToken"];
 
@@ -28,12 +28,12 @@ namespace MinimalApi.Base.Presentation.Filters
                 if (ApiTokenIncoming is not null && ApiTokenIncoming.Equals(Apitoken))
                 {
                     var result = await next(context);
-                    _logger.LogInformation("Headers validation Completed");
+                   // _logger.LogInformation("Headers validation Completed");
                     return result;
                 }
 
             }
-            _logger.LogWarning("Unauthorized - headers");
+           // _logger.LogWarning("Unauthorized - headers");
             return Results.Unauthorized();
         }
     } 

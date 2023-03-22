@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Asp.Versioning.Builder;
 using Microsoft.AspNetCore.Mvc;
+using MinimalApi.Base._02.Infrastructure.Integration.Logging;
 using MinimalApi.Base.Application.Models;
 using MinimalApi.Base.Application.Services.Slave;
 using MinimalApi.Base.Presentation.Filters;
@@ -10,15 +11,16 @@ namespace MinimalApi.Base.Presentation.Controllers
 {
     public static class Endpoints
     {
-        public static void RegisterProductsEndpoints(this IEndpointRouteBuilder endpoints, ApiVersionSet versionSet, ILogger _logger)
+        public static void RegisterProductsEndpoints(this IEndpointRouteBuilder endpoints,   ApiVersionSet versionSet)
         {
-            endpoints.MapGet("/api/v1/GetAll", async (HttpContext _httpContext, [FromServices] IForecastService _forecastService, CancellationToken token)
+            endpoints.MapGet("/api/v1/GetAll", async (HttpContext _httpContext, [FromServices] IForecastService _forecastService, [FromServices] IEventLogger _logger, CancellationToken token)
              =>
             {
+                _logger.LogInfo("hola mama");
+                _logger.LogWarn("warning y errorrrrrrrrr");
+//var mout =await _forecastService.GetListForestAsync(token);
 
-                var mout =await _forecastService.GetListForestAsync(token);
-
-                return Results.Ok(mout);
+                return Results.Ok();
 
 
             })

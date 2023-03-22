@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MinimalApi.Base;
+using MinimalApi.Base._02.Infrastructure.Integration.Logging;
 using MinimalApi.Base.Infrastructure.Persistence;
 using MinimalApi.Base.Presentation.ApiServices;
 using MinimalApi.Base.Presentation.ApiServices.OpenApiSupport;
@@ -15,10 +16,10 @@ using Newtonsoft.Json;
 using Serilog;
 using System.Net.Http.Headers;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddSingleton<IEventLogger, OnwLogger>();
 
 builder.Services.AddDbContext<ApplicationDBContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("MinimalApiDB")));
@@ -32,6 +33,7 @@ builder.Services.AddInfrastructureRepositoriesGroup();
 builder.Services.AddHttpClientsGroup();
 
 builder.Services.AddConfigureJWT(builder.Configuration);
+
 
 //Options pattern config settings
 
@@ -49,17 +51,18 @@ builder.Services.AddEndpointsApiExplorer();
 
 //======================== Logging =========================
 builder.Logging.ClearProviders();
-builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
 
-builder.Host.UseSerilog((ctx, loggerConfig) => loggerConfig.ReadFrom.Configuration(ctx.Configuration));
+builder.Host.UseSerilog((ctx, loggerConfig) =>
+{
+    loggerConfig.ReadFrom.Configuration(ctx.Configuration);
+});
 
 builder.Services.AddSwaggerGen(setup =>
 {
     setup.OperationFilter<HeaderParametersOperationFilter>();
 });
 
-builder.Services.AddCors(options =>
-{
+builder.Services.AddCors(options =>{
     options.AddPolicy("AllowAll",
         policy => policy.AllowAnyHeader()
         .AllowAnyMethod()
@@ -96,7 +99,7 @@ app.UseCors("AllowAll");
 //===================== Controllers =============================
 
 
-app.RegisterProductsEndpoints(versionSet, app.Logger);
+app.RegisterProductsEndpoints(versionSet);
 
 
 
