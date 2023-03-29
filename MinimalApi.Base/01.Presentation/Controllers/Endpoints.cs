@@ -13,14 +13,14 @@ namespace MinimalApi.Base.Presentation.Controllers
     {
         public static void RegisterProductsEndpoints(this IEndpointRouteBuilder endpoints,   ApiVersionSet versionSet)
         {
-            endpoints.MapGet("/api/v1/GetAll", async (HttpContext _httpContext, [FromServices] IForecastService _forecastService, [FromServices] IEventLogger _logger, CancellationToken token)
+            endpoints.MapGet("/api/v1/GetAll", async (HttpContext _httpContext, [FromServices] IForecastService _forecastService, [FromServices] IApiLogger _logger, CancellationToken token)
              =>
             {
-                _logger.LogInfo("hola mama");
-                _logger.LogWarn("warning y errorrrrrrrrr");
+                _logger.LoggingInformation("hola mama");
+                _logger.LoggingWarning("warning y errorrrrrrrrr");
 //var mout =await _forecastService.GetListForestAsync(token);
 
-                return Results.Ok();
+                return Results.Ok("manrique");
 
 
             })
