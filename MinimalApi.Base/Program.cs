@@ -7,11 +7,12 @@ using MinimalApi.Base.Presentation.ApiServices.OpenApiSupport;
 using MinimalApi.Base.Presentation.Controllers;
 using MinimalApi.Base.Presentation.Filters;
 using MinimalApi.Base.Presentation.Middlewares;
+using Nest;
 using NLog;
 using NLog.Fluent;
 using NLog.Web;
 
-var logger = LogManager.GetLogger("FileConsoleLogger");
+var logger = LogManager.GetLogger("ConsoleLogger");
 
 try
 {
@@ -38,7 +39,7 @@ try
     //Options pattern config settings
 
     builder.Services.Configure<SecuritySettings>(builder.Configuration.GetSection("Security"));
-    builder.Services.Configure<LoggingSettings>(builder.Configuration.GetSection("LogSettings"));
+   // builder.Services.Configure<LoggingSettings>(builder.Configuration.GetSection("LogSettings"));
 
 
     //============= Api Versioning ===============
@@ -53,11 +54,21 @@ try
 
     //======================== Logging =========================
 
-    builder.Logging.ClearProviders();
-    builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Information);
     builder.Host.UseNLog();
-    builder.Services.AddSingleton<IApiLogger, LoggerManager>();
 
+
+    builder.Services.UseUnitOfLogging().UseMyUnitOfLogging(builder.Configuration, options =>
+    {
+        options.LogSectionName = "LogSettings";
+        options.AddTargets(po =>
+        {
+            po.DefaultConsoleLogSettings = true;
+            po.ConsoleConfiguration.ConsoleTargetConfig = new NLog.Targets.ColoredConsoleTarget
+            {
+
+            };
+        });
+    });
 
     builder.Services.AddSwaggerGen(setup =>
     {

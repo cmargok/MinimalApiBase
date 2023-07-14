@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 
 namespace MinimalApi.Base._02.Infrastructure.Integration.Logging
 {
-    public class LoggerManager : IApiLogger
+    public sealed class LoggerManager : IApiLogger
     {
 
         private readonly List<IApiLogger> _apiLoggers;
@@ -14,56 +14,57 @@ namespace MinimalApi.Base._02.Infrastructure.Integration.Logging
         {
             _apiLoggers = new List<IApiLogger>();
             _loggingSettings = settings.Value;
-
             InitializeLoggers(loggerFactory);
         }
+
+
+
         private void InitializeLoggers(ILoggerFactory loggerFactory) 
         {
-            
-            if (_loggingSettings.IsFileConsoleActivated) 
+            if (_loggingSettings.LoggingActive)
             {
-                _apiLoggers.Add(new ApiLogger(loggerFactory, _loggingSettings.FileConsoleLoggerName));
+                foreach (var logger in _loggingSettings.GetActiveLoggers())
+                {
+                    _apiLoggers.Add(new ApiLogger(loggerFactory, logger));
+                }
             }
-
-            if (_loggingSettings.IsSeqActivated)
-            {
-                _apiLoggers.Add(new ApiLogger(loggerFactory, _loggingSettings.SeqLoggerName));
-            }
-
-            if (!_apiLoggers.Any())
-            {
-                _apiLoggers.Add(new ApiLogger(loggerFactory, _loggingSettings.FileConsoleLoggerName));
-            }
-
         }
 
 
 
         public void LoggingInformation(string message)
         {
-           
-            foreach(var logger in _apiLoggers)
+            if (_loggingSettings.LoggingActive)
             {
-                logger.LoggingInformation(message);
-            }            
+                foreach (var logger in _apiLoggers)
+                {
+                    logger.LoggingInformation(message);
+                }
+            }
         }
 
         public void LoggingWarning(string message)
         {
-            foreach (var logger in _apiLoggers)
+            if (_loggingSettings.LoggingActive)
             {
-                logger.LoggingWarning(message);
+                foreach (var logger in _apiLoggers)
+                {
+                    logger.LoggingWarning(message);
+                }
             }
-
         }
 
         public void LoggingError(Exception ex, string message)
         {
-            foreach (var logger in _apiLoggers)
+            if (_loggingSettings.LoggingActive)
             {
-                logger.LoggingError(ex,message);
+                foreach (var logger in _apiLoggers)
+                {
+                    logger.LoggingError(ex, message);
+                }
             }
         }
+
 
 
 

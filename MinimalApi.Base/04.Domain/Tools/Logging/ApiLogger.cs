@@ -7,7 +7,7 @@ namespace MinimalApi.Base._02.Infrastructure.Integration.Logging
     {
         private readonly ILogger _logger;      
 
-        public ApiLogger(ILoggerFactory loggerFactory, string NameLogger)
+        internal ApiLogger(ILoggerFactory loggerFactory, string NameLogger)
         {      
             _logger = loggerFactory.CreateLogger(NameLogger);                      
         }
@@ -27,5 +27,3 @@ namespace MinimalApi.Base._02.Infrastructure.Integration.Logging
             _logger.LogError(ex, message);           
         }
     }
-
-}
